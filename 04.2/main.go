@@ -1,26 +1,24 @@
 package main
 
-import "fmt"
-
 type ListNode struct {
 	val  int
 	next *ListNode
 }
 
-func createList(s []int) {
-	node := &ListNode{s[0], &ListNode{}}
+func createList(s []int) *ListNode {
+	first := ListNode{s[0], &ListNode{}}
+	prev := &first
 	for k, v := range s {
 		if k > 0 {
-			node.next = &ListNode{v, &ListNode{}}
-			node = node.next
+			prev.next = &ListNode{}
+			prev.next.val = v
+			prev = prev.next
 		}
-		fmt.Println(node)
 	}
-
+	return &first
 }
-
 func main() {
 	s := []int{1, 2, 3}
-	createList(s)
-
+	a := createList(s)
+	print(a)
 }
