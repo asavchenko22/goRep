@@ -7,6 +7,8 @@ type ListNode struct {
 	next *ListNode
 }
 
+type Empty struct{}
+
 func createList(s []int) *ListNode {
 	first := ListNode{val: s[0]}
 	current := &first
@@ -20,43 +22,28 @@ func createList(s []int) *ListNode {
 }
 
 func main() {
-	s := []int{1, 2, 1, 2}
+	s := []int{1, 1, 2, 3, 5, 5, 5, 7, 7, 5, 5, 1, 1, 2, 0, 0, 4, 3, 2, 1, 2}
 	list := createList(s)
 	deleteDuplicates(list)
 	fmt.Println(list)
 }
 
 func deleteDuplicates(mainNode *ListNode) *ListNode {
-	currentNode := mainNode
-	var uniqueVal []int
-	switchTest := true
-	firstValueCheck := true
-
-	for currentNode.next != nil {
-		switchTest = true
-
-		if firstValueCheck {
-			uniqueVal = []int{currentNode.val}
-			firstValueCheck = false
-		}
-
-		for k, v := range uniqueVal {
-			fmt.Println("v = ", v)
-			fmt.Println("currentNode.val = ", v)
-			if v != currentNode.val {
-
-				uniqueVal = append(uniqueVal, currentNode.val)
-			} else if k > 0 {
-				currentNode = currentNode.next
-				switchTest = false
-			}
-		}
-		if switchTest {
-			currentNode = currentNode.next
-		}
+	var uniqueVal = map[int]Empty{
+		mainNode.val: {},
 	}
 
-	return mainNode
+	currentNode := mainNode
+	for currentNode.next != nil {
+		if _, ok := uniqueVal[currentNode.next.val]; ok {
+			currentNode.next = currentNode.next.next
+			continue
+		} else {
+			uniqueVal[currentNode.next.val] = Empty{}
+		}
+		currentNode = currentNode.next
+	}
+	return currentNode
 }
 
 //func printList(a *ListNode) *ListNode {
