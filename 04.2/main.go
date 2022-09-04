@@ -20,16 +20,40 @@ func createList(s []int) *ListNode {
 }
 
 func main() {
-	s := []int{1, 2, 1, 3, 4, 3, 3, 4}
+	s := []int{1, 2, 1, 2}
 	list := createList(s)
 	deleteDuplicates(list)
 	fmt.Println(list)
 }
 
 func deleteDuplicates(mainNode *ListNode) *ListNode {
-	current := mainNode
-	for current.next != nil {
-		current = current.next
+	currentNode := mainNode
+	var uniqueVal []int
+	switchTest := true
+	firstValueCheck := true
+
+	for currentNode.next != nil {
+		switchTest = true
+
+		if firstValueCheck {
+			uniqueVal = []int{currentNode.val}
+			firstValueCheck = false
+		}
+
+		for k, v := range uniqueVal {
+			fmt.Println("v = ", v)
+			fmt.Println("currentNode.val = ", v)
+			if v != currentNode.val {
+
+				uniqueVal = append(uniqueVal, currentNode.val)
+			} else if k > 0 {
+				currentNode = currentNode.next
+				switchTest = false
+			}
+		}
+		if switchTest {
+			currentNode = currentNode.next
+		}
 	}
 
 	return mainNode
